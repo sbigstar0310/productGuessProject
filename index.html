@@ -5,31 +5,43 @@
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width" />
-		<title> 상품 가격을 맞춰보세요</title>
+		<link rel="stylesheet" href="styles/style.css">
+		<title>상품 가격을 맞춰보자!</title>
+
 	</head>
 	<body>
 		<script src="itemsNamePriceImage.js"></script>
 		<script src="script.js"></script>
 
-		<h1>다음 상품의 가격을 맞춰 보세요.</h1>
+		<header>
+			<h1>다음 상품의 가격을 맞춰 보세요</h1>
+		</header>
 
-		<button id="btnStart" onclick="gameStart()">게임시작</button>
-		<button id="btnNext" onclick="nextProblem()">다음 문제</button>
+		<main>
+			<button id="btnStart" onclick="gameStart()">게임시작</button>
+			<button style="display: none" id="btnNext" onclick="nextProblem()">다음 문제</button>
 
-		<div id="gameArea">
-			<div id="productImageArea"></div>
-			<div id="productNameArea" ></div>
-		</div>
+			<div id="gameArea">
+				<div id="productImageArea"></div>
+				<div id="productNameArea" ></div>
+			</div>
 
 
-		<div>
-			<br/>
-			예측값: <input type="number" id="user-price-box">원
-			<button type="button" onclick="show_result()">확인하기</button>
-			<br/>
-			실제값: <input type="number" id="real-price-box" readonly >
-			<br/>
-			오차값: <input type="number" id="diff-price-box" readonly>
-		</div>
+			<div>
+				<br/>
+				예측값: <input type="number" id="user-price-box">원
+				<button type="button" onclick="show_result()">확인하기</button>
+				<br/>
+				실제값: <input type="number" id="real-price-box" readonly>
+				<br/>
+				오차값: <input type="number" id="diff-price-box" readonly>
+			</div>
+		</main>
+
+		<aside>
+			<h3> 내 점수</h3>
+			<input type="number" id="userScore" value="0" readonly> 점
+		</aside>
+
 	</body>
 </html>

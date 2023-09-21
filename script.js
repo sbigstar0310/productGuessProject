@@ -1,16 +1,19 @@
 let jsonData = JSON.parse(JSON.stringify(items));
 var random_index = Math.floor( ( Math.random() * 10 + 1 ) );
-//const random_index = 1;
-//console.log(random_index);
 var item_name = JSON.stringify(jsonData[random_index].name);
 var item_price = JSON.stringify(jsonData[random_index].price);
 var item_image = JSON.stringify(jsonData[random_index].image);
 
-//console.log(item_name);
-//console.log(item_price);
-//console.log(item_image);
 
 function gameStart() {
+	//'게임시작' 버튼 클릭시 '게임시작' 버튼 숨기기
+	const btnStart = document.getElementById("btnStart");
+	btnStart.style.display = 'none';
+
+	//'게임시작' 버튼 클릭시 '다음문제' 버튼 나타내기
+	const btnNext = document.getElementById("btnNext");
+	btnNext.style.display = 'block';
+
 	var imgArea = document.getElementById("productImageArea");
 	var nameArea = document.getElementById("productNameArea");
 	imgArea.innerHTML = "";
@@ -50,13 +53,21 @@ function nextProblem() {
 }
 
 function show_result() {
-	console.log("show_result function");
 	var real_price = item_price.replace(/"/g, "") * 1;
-	console.log("real_price: " + real_price + " type: " + typeof real_price);
 	var user_price = parseInt(document.getElementById("user-price-box").value);
-	console.log("user_price: " + user_price + " type: " + typeof user_price);
-	document.getElementById("real-price-box").value = real_price;
-	document.getElementById("diff-price-box").value = real_price - user_price;
+	realPriceBox = document.getElementById("real-price-box");
+	realPriceBox.value = real_price;
+	diffPriceBox = document.getElementById("diff-price-box");
+	diffPriceBox.value = Math.abs(real_price - user_price);
+
+	var userScore = document.getElementById("userScore");
+	var newScore = parseInt(userScore.value) + Math.abs(real_price - user_price);
+	console.log(typeof newScore);
+	userScore.value = newScore;
+
+	if (userScore.value > 1000000) {
+		alert("점수가 100만원을 넘었습니다! 실패!")
+	}
 }
 
 
