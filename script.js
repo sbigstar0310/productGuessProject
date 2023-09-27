@@ -1,8 +1,8 @@
 let jsonData = JSON.parse(JSON.stringify(items));
-var random_index = Math.floor(Math.random() * 10 + 1);
-var item_name = JSON.stringify(jsonData[random_index].name);
-var item_price = JSON.stringify(jsonData[random_index].price);
-var item_image = JSON.stringify(jsonData[random_index].image);
+var random_index = Math.floor(Math.random() * 10);
+var item_name = JSON.stringify(jsonData["itemList"][random_index].name);
+var item_price = JSON.stringify(jsonData["itemList"][random_index].price);
+var item_image = JSON.stringify(jsonData["itemList"][random_index].image);
 
 function gameStart() {
   //'게임시작' 버튼 클릭시 '게임시작' 버튼 숨기기
@@ -13,11 +13,13 @@ function gameStart() {
   const btnNext = document.getElementById("btnNext");
   btnNext.style.display = "block";
 
+  //상품 이미지, 이름 나타날 공간 초기화
   var imgArea = document.getElementById("productImageArea");
   var nameArea = document.getElementById("productNameArea");
   imgArea.innerHTML = "";
   nameArea.innerHTML = "";
 
+  //상품 이미지, 이름 나타내기
   var img = new Image();
   img.src = "images/" + item_image.replace(/"/g, "");
   img.width = "400";
@@ -28,14 +30,14 @@ function gameStart() {
 }
 
 function nextProblem() {
-  document.getElementById("user-price-box").value = "";
+  document.getElementById("user-price-box").value = "0";
   document.getElementById("real-price-box").value = "";
   document.getElementById("diff-price-box").value = "";
 
-  random_index = Math.floor(Math.random() * 10 + 1);
-  item_name = JSON.stringify(jsonData[random_index].name);
-  item_price = JSON.stringify(jsonData[random_index].price);
-  item_image = JSON.stringify(jsonData[random_index].image);
+  random_index = Math.floor(Math.random() * 10);
+  item_name = JSON.stringify(jsonData["itemList"][random_index].name);
+  item_price = JSON.stringify(jsonData["itemList"][random_index].price);
+  item_image = JSON.stringify(jsonData["itemList"][random_index].image);
 
   var imgArea = document.getElementById("productImageArea");
   var nameArea = document.getElementById("productNameArea");
@@ -52,11 +54,13 @@ function nextProblem() {
 }
 
 function show_result() {
+  // 만약 예측값이 없는 경우에 확인하기 버튼을 누른 경우.
+  // 입력값을 0 점으로 반영하여 처리.
   var real_price = item_price.replace(/"/g, "") * 1;
   var user_price = parseInt(document.getElementById("user-price-box").value);
-  realPriceBox = document.getElementById("real-price-box");
+  var realPriceBox = document.getElementById("real-price-box");
   realPriceBox.value = real_price;
-  diffPriceBox = document.getElementById("diff-price-box");
+  var diffPriceBox = document.getElementById("diff-price-box");
   diffPriceBox.value = Math.abs(real_price - user_price);
 
   var userScore = document.getElementById("userScore");
