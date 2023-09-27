@@ -15,22 +15,59 @@ from bs4 import BeautifulSoup
 def getTodayDate():
     return datetime.datetime.now().strftime("%Y%m%d")
 
+def getRequestOrError(url):
+    request = requests.get(url)
+    request.raise_for_status()
+    return request
+
+def getProductNamePriceImagesrc(soup):
+    name = getProductName(soup)
+    price = getProductPrice(soup)
+    imageSrc = getProductImageSrc(soup)
+    return (name, price, imageSrc)
+
+def getProductName(soup):
+    name = soup.find("div", {"class": "imageProduct_title__Wdeb1"}).text
+    return name
+
+def getProductPrice(soup):
+    price = soup.find("div", {"class": "imageProduct_price__W6pU1"}).next_element.text.replace(",","")
+    return price
+
+def getProductImageSrc(soup):
+    imageSrc = soup.find('div', {"class":"imageProduct_thumbnail__Szi5F"}).next_element.next_sibling.next_element.next_sibling.next_element['src']
+    return imageSrc
+
 todayDate = getTodayDate()
 navershopDayBestUrl = (
     "https://search.shopping.naver.com/best/today?rankedDate=" + todayDate
 )
-markup = requests.get(navershopDayBestUrl)
-markup.raise_for_status()
+markup = getRequestOrError(navershopDayBestUrl)
 soup = BeautifulSoup(markup.text, "lxml")
 
-#name과 price 크롤링 및 자료변환 성공.
-name = soup.find("div", {"class": "imageProduct_title__Wdeb1"})
-price = soup.find("div", {"class": "imageProduct_price__W6pU1"}).next_element.text
+#name, price, imagesrc 크롤링
+name, price, imageSrc = getProductNamePriceImagesrc(soup)
 
+file_path = "test.json"
+with open(file_path, 'r') as file:
+    data = json.load(file)
 
-# 이미지 크롤링 및 저장 구현 성공.
-# image_src = soup.find('div', {"class":"imageProduct_thumbnail__Szi5F"}).next_element.nextSibling.next_element.next_sibling.next_element['src']
-# urllib.request.urlretrieve(image_src, "images/" + imageIndex + ".jpg")
+itemIndex = len(data["itemList"])
+image = str(itemIndex+1) + ".jpg"
+newListItem = json.loads(str(
+{
+    "name" : name,
+    "price" : price,
+    "image" : image
+}
+).replace("'","\""))
 
-#Todo: 현재 데이터가 json형식의 js파일로 저장되어 있어서
-#      해당 데이터를 json형식의 json파일로 저장해야 함.
+#print(newListItem)
+data["itemList"].append(newListItem)
+
+# json 데이터 저장
+with open(file_path, 'w', encoding='utf-8') as file:
+    json.dump(data, file, indent="\t", ensure_ascii=False)
+
+# 이미지 저장
+# urllib.request.urlretrieve(imageSrc, "images/" + imageIndex + ".jpg")
