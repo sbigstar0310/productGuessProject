@@ -1,5 +1,6 @@
 let jsonData = JSON.parse(JSON.stringify(items));
-var random_index = Math.floor(Math.random() * 10);
+var itemLength = Object.values(jsonData["itemList"]).length;
+var random_index = Math.floor(Math.random() * itemLength);
 var item_name = JSON.stringify(jsonData["itemList"][random_index].name);
 var item_price = JSON.stringify(jsonData["itemList"][random_index].price);
 var item_image = JSON.stringify(jsonData["itemList"][random_index].image);
@@ -34,7 +35,7 @@ function nextProblem() {
   document.getElementById("real-price-box").value = "";
   document.getElementById("diff-price-box").value = "";
 
-  random_index = Math.floor(Math.random() * 10);
+  random_index = Math.floor(Math.random() * itemLength);
   item_name = JSON.stringify(jsonData["itemList"][random_index].name);
   item_price = JSON.stringify(jsonData["itemList"][random_index].price);
   item_image = JSON.stringify(jsonData["itemList"][random_index].image);
