@@ -48,12 +48,14 @@ soup = BeautifulSoup(markup.text, "lxml")
 #name, price, imagesrc 크롤링
 name, price, imageSrc = getProductNamePriceImagesrc(soup)
 
-file_path = "test.json"
-with open(file_path, 'r') as file:
+file_path = "itemsNamePriceImage.json"
+
+with open(file_path, 'rb') as file:
+    file.readline()
     data = json.load(file)
 
-itemIndex = len(data["itemList"])
-image = str(itemIndex+1) + ".jpg"
+itemIndex = len(data["itemList"]) + 1
+image = str(itemIndex) + ".jpg"
 newListItem = json.loads(str(
 {
     "name" : name,
@@ -67,7 +69,8 @@ data["itemList"].append(newListItem)
 
 # json 데이터 저장
 with open(file_path, 'w', encoding='utf-8') as file:
-    json.dump(data, file, indent="\t", ensure_ascii=False)
+  file.write("items = \n")
+  json.dump(data, file, indent="\t", ensure_ascii=False)
 
 # 이미지 저장
-# urllib.request.urlretrieve(imageSrc, "images/" + imageIndex + ".jpg")
+urllib.request.urlretrieve(imageSrc, "images/" + str(itemIndex) + ".jpg")
