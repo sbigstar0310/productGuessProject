@@ -12,9 +12,12 @@ import urllib
 import json
 from bs4 import BeautifulSoup
 
-def getTodayDate():
-    return datetime.datetime.now().strftime("%Y%m%d")
-
+def getTodayDate(userDate = ""):
+    if userDate == "":
+        return datetime.datetime.now().strftime("%Y%m%d")
+    else:
+        return userDate
+    
 def getRequestOrError(url):
     request = requests.get(url)
     request.raise_for_status()
@@ -38,7 +41,9 @@ def getProductImageSrc(soup):
     imageSrc = soup.find('div', {"class":"imageProduct_thumbnail__Szi5F"}).next_element.next_sibling.next_element.next_sibling.next_element['src']
     return imageSrc
 
-todayDate = getTodayDate()
+userDate = input("클롤링 하려는 날짜를 입력: ")
+todayDate = getTodayDate(userDate)
+
 navershopDayBestUrl = (
     "https://search.shopping.naver.com/best/today?rankedDate=" + todayDate
 )
